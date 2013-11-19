@@ -8,6 +8,8 @@ site :opscode
 
 metadata
 
-cookbook "ktc-testing"
-cookbook "ktc-etcd"
-cookbook "graphite_test", path: "test/cookbooks/graphite_test"
+group "integration" do
+  cookbook "ktc-testing"
+  cookbook "etcd"
+  cookbook "graphite_test", path: "test/cookbooks/graphite_test"
+end
