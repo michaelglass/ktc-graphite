@@ -1,4 +1,4 @@
-ktc-graphite
-============
+Description
+=======
 
-kt cloudware's graphite wrapper
+This is a wrapper for graphite cookbook.
