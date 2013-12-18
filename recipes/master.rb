@@ -20,13 +20,26 @@
 include_recipe "services"
 include_recipe "ktc-utils"
 
+graphite_service =  Services::Service.new 'graphite'
+graphite_service.members.map { |m|
+  # Update carbon-relay destinations
+  node.default['graphite']['carbon']['relay']['destinations'] << "#{m.ip}:#{m.port}"
+  # Update webapp cluster_servers
+  node.default['graphite']['web']['cluster_servers'] << "#{m.ip}:80"
+}
+
 include_recipe "graphite"
+include_recipe "graphite::carbon_relay"
 
+# Register main carbon-relay endpoint
 ::KTC::Network.node = node
-
 ip = ::KTC::Network.address "management"
 
-ep = Services::Endpoint.new "graphite",
-  ip: ip,
-  port: node['graphite']['carbon']['line_receiver_port']
-ep.save
+ruby_block "register graphite endpoint" do
+  block do
+    ep = Services::Endpoint.new "graphite",
+      ip: ip,
+      port: node['graphite']['carbon']['relay']['line_receiver_port']
+    ep.save
+  end
+end

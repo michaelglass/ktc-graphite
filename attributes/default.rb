@@ -20,3 +20,12 @@ include_attribute "graphite::default"
 include_attribute "graphite::graphite"
 
 default['graphite']['timezone'] = 'Asia/Seoul'
+
+default['graphite']['carbon']['line_receiver_port'] = 2013
+default['graphite']['carbon']['udp_receiver_port'] = 2013
+default['graphite']['carbon']['pickle_receiver_port'] = 2014
+
+default['graphite']['carbon']['relay']['line_receiver_port'] = 2003
+default['graphite']['carbon']['relay']['pickle_receiver_port'] = 2004
+default['graphite']['carbon']['relay']['method'] = "consistent-hashing"  # rules | consistent-hashing
+default['graphite']['carbon']['relay']['destinations'] = ["127.0.0.1:2014"]

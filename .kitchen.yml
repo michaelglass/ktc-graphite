@@ -1,19 +1,22 @@
 ---
-driver_plugin: vagrant
-provisioner: chef_zero
+settings:
+parallel: true
+
+driver: vagrant
+provisioner:
+  name: chef_zero
+  require_chef_omnibus: latest
+
 
 platforms:
-- name: ubuntu-12.04_chef-11.4.4
-  driver_config:
-    box: opscode-ubuntu-12.04_chef-11.4.4
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.4.4.box
+- name: ubuntu-12.04
 
 suites:
 - name: default
   run_list:
     - recipe[ktc-testing]
     - recipe[etcd::compile_time]
-    - recipe[ktc-graphite]
+    - recipe[ktc-graphite::master]
     - recipe[graphite_test]
   attributes:
     ha_disabled: true
