@@ -20,14 +20,13 @@
 include_recipe "services"
 include_recipe "ktc-utils"
 
-# Search graphite peer nodes
-query = "recipes:#{node['graphite']['server_recipe']} AND chef_environment:#{node.chef_environment}"
-search(:node, query) do |n|
+graphite_service =  Services::Service.new 'graphite'
+graphite_service.members.map { |m|
   # Update carbon-relay destinations
-  node.default['graphite']['carbon']['relay']['destinations'] << "#{n['ipaddress']}:2004"
+  node.default['graphite']['carbon']['relay']['destinations'] << "#{m.ip}:#{m.port}"
   # Update webapp cluster_servers
-  node.default['graphite']['web']['cluster_servers'] << "#{n['ipaddress']}:80"
-end
+  node.default['graphite']['web']['cluster_servers'] << "#{m.ip}:80"
+}
 
 include_recipe "graphite"
 include_recipe "graphite::carbon_relay"
@@ -36,7 +35,11 @@ include_recipe "graphite::carbon_relay"
 ::KTC::Network.node = node
 ip = ::KTC::Network.address "management"
 
-ep = Services::Endpoint.new "graphite",
-  ip: ip,
-  port: node['graphite']['carbon']['relay']['line_receiver_port']
-ep.save
+ruby_block "register graphite endpoint" do
+  block do
+    ep = Services::Endpoint.new "graphite",
+      ip: ip,
+      port: node['graphite']['carbon']['relay']['line_receiver_port']
+    ep.save
+  end
+end

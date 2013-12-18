@@ -29,5 +29,3 @@ default['graphite']['carbon']['relay']['line_receiver_port'] = 2003
 default['graphite']['carbon']['relay']['pickle_receiver_port'] = 2004
 default['graphite']['carbon']['relay']['method'] = "consistent-hashing"  # rules | consistent-hashing
 default['graphite']['carbon']['relay']['destinations'] = ["127.0.0.1:2014"]
-
-default['graphite']['server_recipe'] = "ktc-monitor\\:\\:server_graphite"

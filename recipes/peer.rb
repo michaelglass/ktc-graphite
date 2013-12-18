@@ -19,3 +19,14 @@
 
 include_recipe "graphite"
 include_recipe "graphite::carbon_relay"
+
+ruby_block "service member registration" do
+  block do
+    #service  = Services::Service.new("graphite")
+    member = Services::Member.new node['fqdn'],
+      service: "graphite",
+      port: node['graphite']['carbon']['relay']['pickle_receiver_port'],
+      ip: node[:ipaddress]
+    member.save
+  end
+end
