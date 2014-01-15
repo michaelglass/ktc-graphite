@@ -20,13 +20,15 @@
 include_recipe "graphite"
 include_recipe "graphite::carbon_relay"
 
-ruby_block "service member registration" do
+::KTC::Network.node = node
+ip = ::KTC::Network.address "management"
+
+ruby_block "register graphite member" do
   block do
-    #service  = Services::Service.new("graphite")
     member = Services::Member.new node['fqdn'],
       service: "graphite",
       port: node['graphite']['carbon']['relay']['pickle_receiver_port'],
-      ip: node[:ipaddress]
+      ip: ip
     member.save
   end
 end
