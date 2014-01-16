@@ -42,7 +42,4 @@ ruby_block "register graphite endpoint" do
       port: node['graphite']['carbon']['relay']['line_receiver_port']
     ep.save
   end
-  # For now, let's also set endpoint even though the HA is disabled
-  # for compatibility with other cookbooks that load graphite endpoints.
-  #not_if { node['ha_disabled'] }
 end
