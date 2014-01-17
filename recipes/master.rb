@@ -19,21 +19,21 @@
 
 include_recipe "services"
 include_recipe "ktc-utils"
+include_recipe "ktc-graphite::peer"
+
+::KTC::Network.node = node
+ip = ::KTC::Network.address "management"
 
 graphite_service =  Services::Service.new 'graphite'
 graphite_service.members.map { |m|
-  # Update carbon-relay destinations
-  node.default['graphite']['carbon']['relay']['destinations'] << "#{m.ip}:#{m.port}"
-  # Update webapp cluster_servers
-  node.default['graphite']['web']['cluster_servers'] << "#{m.ip}:80"
+  unless m.ip == ip or m.name == node['fqdn']
+    Chef::Log.info("Found a member: #{m.name}. Loading it from etcd..")
+    # Update carbon-relay destinations
+    node.default['graphite']['carbon']['relay']['destinations'] << "#{m.ip}:#{m.port}"
+    # Update webapp cluster_servers
+    node.default['graphite']['web']['cluster_servers'] << "#{m.ip}:80"
+  end
 }
-
-include_recipe "graphite"
-include_recipe "graphite::carbon_relay"
-
-# Register main carbon-relay endpoint
-::KTC::Network.node = node
-ip = ::KTC::Network.address "management"
 
 ruby_block "register graphite endpoint" do
   block do
