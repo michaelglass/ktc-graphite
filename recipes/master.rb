@@ -1,8 +1,7 @@
 #
 # Cookbook Name:: ktc-graphite
-# Recipe:: default
-#
-# Copyright 2013, Robert Choi.
+# Recipe:: master
+# Author:: Robert Choi
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +18,7 @@
 
 include_recipe "services"
 include_recipe "ktc-utils"
-include_recipe "ktc-graphite::peer"
+include_recipe "ktc-graphite::_member"
 
 ::KTC::Network.node = node
 ip = ::KTC::Network.address "management"
@@ -34,6 +33,9 @@ graphite_service.members.map { |m|
     node.default['graphite']['web']['cluster_servers'] << "#{m.ip}:80"
   end
 }
+
+include_recipe "graphite"
+include_recipe "graphite::carbon_relay"
 
 ruby_block "register graphite endpoint" do
   block do
