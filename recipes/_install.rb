@@ -20,6 +20,11 @@ require 'chef/rewind'
 
 version = node['graphite']['version']
 
+# Temporary fix. Should be removed soon. #
+package "python-django" do
+  version "1.3.1-4ubuntu1.8"
+end
+
 # Install packages from our repo
 %w{ python-whisper python-carbon graphite-web }.each do |pkg|
   package pkg do
