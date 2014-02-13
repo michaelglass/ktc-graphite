@@ -20,6 +20,7 @@ include_attribute "graphite::default"
 include_attribute "graphite::graphite"
 
 default['graphite']['timezone'] = 'Asia/Seoul'
+default['graphite']['package_version'] = '0.9.10-1'
 
 default['graphite']['carbon']['line_receiver_port'] = 2013
 default['graphite']['carbon']['udp_receiver_port'] = 2013

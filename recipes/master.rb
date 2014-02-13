@@ -34,8 +34,7 @@ graphite_service.members.map { |m|
   end
 }
 
-include_recipe "graphite"
-include_recipe "graphite::carbon_relay"
+include_recipe "ktc-graphite::_install"
 
 ruby_block "register graphite endpoint" do
   block do

@@ -16,6 +16,5 @@
 # limitations under the License.
 #
 
-include_recipe "graphite"
-include_recipe "graphite::carbon_relay"
+include_recipe "ktc-graphite::_install"
 include_recipe "ktc-graphite::_member"
