@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: ktc-graphite
-# Recipe:: peer
+# Recipe:: _member
 # Author:: Robert Choi
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,5 +16,15 @@
 # limitations under the License.
 #
 
-include_recipe "ktc-graphite::_install"
-include_recipe "ktc-graphite::_member"
+::KTC::Network.node = node
+ip = ::KTC::Network.address "management"
+
+ruby_block "register graphite member" do
+  block do
+    member = Services::Member.new node['fqdn'],
+      service: "graphite",
+      port: node['graphite']['carbon']['relay']['pickle_receiver_port'],
+      ip: ip
+    member.save
+  end
+end
