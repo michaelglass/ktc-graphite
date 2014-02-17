@@ -23,6 +23,7 @@ version = node['graphite']['version']
 # Temporary fix. Should be removed soon. #
 package "python-django" do
   version "1.3.1-4ubuntu1.8"
+  options "--force-yes"
 end
 
 # Install packages from our repo
@@ -66,10 +67,6 @@ end
   rewind :execute => exe do
     action :nothing
   end
-end
-
-package "python-django" do
-  action :nothing
 end
 
 # Run carbon_relay service
