@@ -11,6 +11,10 @@ AllCops:
     - test/**
     - vendor/**
 
+
+LineLength:
+  Max: 110
+
 Encoding:
   Exclude:
     - metadata.rb
