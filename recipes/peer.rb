@@ -16,5 +16,5 @@
 # limitations under the License.
 #
 
-include_recipe "ktc-graphite::_install"
-include_recipe "ktc-graphite::_member"
+include_recipe 'ktc-graphite::_install'
+include_recipe 'ktc-graphite::_member'
