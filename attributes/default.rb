@@ -16,8 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_attribute "graphite::default"
-include_attribute "graphite::graphite"
+include_attribute "graphite"
+include_attribute "graphite::carbon_cache"
+include_attribute "graphite::carbon_relay"
 
 default['graphite']['timezone'] = 'Asia/Seoul'
 default['graphite']['package_version'] = '0.9.10-1'
