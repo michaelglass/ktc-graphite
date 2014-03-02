@@ -16,31 +16,33 @@
 # limitations under the License.
 #
 
-include_recipe "services"
-include_recipe "ktc-utils"
-include_recipe "ktc-graphite::_member"
+include_recipe 'services'
+include_recipe 'ktc-utils'
+include_recipe 'ktc-graphite::_member'
 
 ::KTC::Network.node = node
-ip = ::KTC::Network.address "management"
+ip = ::KTC::Network.address 'management'
+port = node['graphite']['carbon']['relay']['line_receiver_port']
 
 graphite_service =  Services::Service.new 'graphite'
-graphite_service.members.map { |m|
-  unless m.ip == ip or m.name == node['fqdn']
+graphite_service.members.map do |m|
+  unless m.ip == ip || m.name == node['fqdn']
     Chef::Log.info("Found a member: #{m.name}. Loading it from etcd..")
     # Update carbon-relay destinations
-    node.default['graphite']['carbon']['relay']['destinations'] << "#{m.ip}:#{m.port}"
+    node.default['graphite']['carbon']['relay']['destinations'] <<
+      "#{m.ip}:#{m.port}"
     # Update webapp cluster_servers
     node.default['graphite']['web']['cluster_servers'] << "#{m.ip}:80"
   end
-}
+end
 
-include_recipe "ktc-graphite::_install"
+include_recipe 'ktc-graphite::_install'
 
-ruby_block "register graphite endpoint" do
+ruby_block 'register graphite endpoint' do
   block do
-    ep = Services::Endpoint.new "graphite",
-      ip: ip,
-      port: node['graphite']['carbon']['relay']['line_receiver_port']
+    ep = Services::Endpoint.new 'graphite',
+                                ip: ip,
+                                port: port
     ep.save
   end
 end

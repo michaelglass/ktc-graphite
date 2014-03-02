@@ -17,14 +17,15 @@
 #
 
 ::KTC::Network.node = node
-ip = ::KTC::Network.address "management"
+ip = ::KTC::Network.address 'management'
+port = node['graphite']['carbon']['relay']['pickle_receiver_port']
 
-ruby_block "register graphite member" do
+ruby_block 'register graphite member' do
   block do
     member = Services::Member.new node['fqdn'],
-      service: "graphite",
-      port: node['graphite']['carbon']['relay']['pickle_receiver_port'],
-      ip: ip
+                                  service: 'graphite',
+                                  port: port,
+                                  ip: ip
     member.save
   end
 end

@@ -15,15 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-chef_gem "chef-rewind"
+chef_gem 'chef-rewind'
 require 'chef/rewind'
 
 version = node['graphite']['version']
 
 # Temporary fix. Should be removed soon. #
-package "python-django" do
-  version "1.3.1-4ubuntu1.8"
-  options "--force-yes"
+package 'python-django' do
+  version '1.3.1-4ubuntu1.8'
+  options '--force-yes'
 end
 
 # Install packages from our repo
@@ -33,41 +33,43 @@ end
   end
 end
 
-include_recipe "graphite"
+include_recipe 'graphite'
 
 # Rewind Whisper installation #
-rewind :remote_file => "#{Chef::Config[:file_cache_path]}/whisper-#{version}.tar.gz" do
+whisper_file = "#{Chef::Config[:file_cache_path]}/whisper-#{version}.tar.gz"
+rewind remote_file: whisper_file do
   action :nothing
 end
 
-["untar whisper", "install whisper"].each do |exe|
-  rewind :execute => exe do
+['untar whisper', 'install whisper'].each do |exe|
+  rewind execute: exe do
     action :nothing
   end
 end
 
 # Rewind Carbon installation #
-rewind :remote_file => "#{Chef::Config[:file_cache_path]}/carbon-#{version}.tar.gz" do
+carbon_file = "#{Chef::Config[:file_cache_path]}/carbon-#{version}.tar.gz"
+rewind remote_file: carbon_file do
   action :nothing
 end
 
-["untar carbon", "install carbon"].each do |exe|
-  rewind :execute => exe do
+['untar carbon', 'install carbon'].each do |exe|
+  rewind execute: exe do
     action :nothing
   end
 end
 
-
 # Rewind Webapp installation#
-rewind :remote_file => "#{Chef::Config[:file_cache_path]}/graphite-web-#{version}.tar.gz" do
+web_file = "#{Chef::Config[:file_cache_path]}/graphite-web-#{version}.tar.gz"
+rewind remote_file: web_file do
   action :nothing
 end
 
-["untar graphite-web", "install graphite-web"].each do |exe|
-  rewind :execute => exe do
+['untar graphite-web', 'install graphite-web'].each do |exe|
+  rewind execute: exe do
     action :nothing
   end
 end
 
 # Run carbon_relay service
-include_recipe "graphite::carbon_relay"
+include_recipe 'graphite::carbon_relay'
