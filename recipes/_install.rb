@@ -27,7 +27,7 @@ package 'python-django' do
 end
 
 # Install packages from our repo
-%w{ python-whisper python-carbon graphite-web }.each do |pkg|
+%w( python-whisper python-carbon graphite-web ).each do |pkg|
   package pkg do
     version node['graphite']['package_version']
   end
