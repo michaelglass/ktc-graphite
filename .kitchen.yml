@@ -21,6 +21,7 @@ suites:
   attributes:
     ha_disabled: true
     etcd:
-      args: '-c 127.0.0.1:4001 -s 127.0.0.1:7001 -f'
+      addr: 127.0.0.1
+      peer_addr: 127.0.0.1
       servers:
         - 127.0.0.1
