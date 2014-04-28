@@ -20,6 +20,8 @@ suites:
     - recipe[graphite_test]
   attributes:
     ha_disabled: true
+    repo_host: repo02.mkd2.ktc
+    repo_branch: stage
     etcd:
       addr: 127.0.0.1
       peer_addr: 127.0.0.1
