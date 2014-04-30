@@ -10,6 +10,7 @@ metadata
 
 group "integration" do
   cookbook "ktc-testing"
+  cookbook "ktc-package", "= 0.1.20"
   cookbook "etcd"
   cookbook "graphite_test", path: "test/cookbooks/graphite_test"
 end
