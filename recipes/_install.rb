@@ -22,7 +22,7 @@ version = node['graphite']['version']
 
 # Temporary fix. Should be removed soon. #
 package 'python-django' do
-  version '1.3.1-4ubuntu1.10'
+  version '1.3.1-4ubuntu1.11'
   options '--force-yes'
 end
 
